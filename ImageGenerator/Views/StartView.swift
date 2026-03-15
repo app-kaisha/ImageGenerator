@@ -11,9 +11,12 @@ import ImagePlayground
 
 struct StartView: View {
     
-    @State var imageGenerator = ImageGenerator()
+    @Environment(AppManager.self) private var appManager
     
     var body: some View {
+        
+        @Bindable var imageGenerator = appManager.imageGenerator
+        
         VStack(alignment: .leading, spacing: 16){
             Text("Create a Unique Dish")
                 .font(.largeTitle.weight(.semibold))
@@ -42,6 +45,15 @@ struct StartView: View {
             
             Spacer()
         }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Generate Image") {
+                    appManager.generateImage()
+                }
+                .buttonStyle(.glassProminent)
+                .disabled(imageGenerator.style == nil)
+            }
+        }
         .pickerStyle(.segmented)
         .labelsHidden()
         .frame(width: ImageGenerator.imageSize)
@@ -50,5 +62,8 @@ struct StartView: View {
 }
 
 #Preview {
-    StartView()
+    NavigationStack {
+        StartView()
+            .previewEnvironment()
+    }
 }

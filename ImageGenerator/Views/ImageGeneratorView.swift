@@ -13,17 +13,37 @@ struct ImageGeneratorView: View {
     @Environment(AppManager.self) private var appManager
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                if let image = appManager.currentImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } else {
+                    StartView()
+                }
+            }
+            .overlay {
+                if appManager.isGenerating {
+                    loadingView()
+                }
+            }
+        }
+    }
+    
+    private func loadingView() -> some View {
+        HStack(spacing: 8) {
+            ProgressView()
+            Text("Generating Image...")
         }
         .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
-    ImageGeneratorView()
-        .previewEnvironment()
+    NavigationStack {
+        ImageGeneratorView()
+            .previewEnvironment()
+    }
 }
