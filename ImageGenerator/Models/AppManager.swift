@@ -40,6 +40,11 @@ class AppManager {
         isGenerating = false
     }
     
+    func add(ingredient: String) {
+        imageGenerator.ingredients.append(ingredient)
+        generateImage()
+    }
+    
     var showKitchen: Bool {
         currentImage != nil || isGenerating
     }
@@ -48,6 +53,7 @@ class AppManager {
 extension View {
     func previewEnvironment(generateImage: Bool = false) -> some View {
         let appManager = AppManager()
+        //appManager.imageGenerator.ingredients.append("Strawberry")
         return environment(appManager)
             .onAppear {
                 if generateImage {

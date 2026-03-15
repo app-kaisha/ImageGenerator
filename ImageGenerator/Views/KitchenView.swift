@@ -20,6 +20,7 @@ struct KitchenView: View {
             imageArea
             
             ImageButtonsView()
+            IngredientsListView()
             
             Spacer()
             if let error = appManager.error {

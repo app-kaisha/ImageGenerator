@@ -14,9 +14,16 @@ class ImageGenerator {
     
     var recipe = ImageGenerator.defaultRecipe
     var style: ImagePlaygroundStyle?
+    var ingredients: [String] = []
     
     var concepts: [ImagePlaygroundConcept] {
-        [ImagePlaygroundConcept.text(recipe)]
+        var playgroundConcepts = [ImagePlaygroundConcept.text(recipe)]
+        
+        for ingredient in ingredients {
+            playgroundConcepts.append(.text(ingredient))
+        }
+        
+        return playgroundConcepts
     }
     
     func generate() async throws -> ImageCreator.CreatedImage {
@@ -38,6 +45,7 @@ class ImageGenerator {
     func resetGenerator() {
         recipe = ImageGenerator.defaultRecipe
         style = nil
+        ingredients.removeAll()
     }
     
 }
