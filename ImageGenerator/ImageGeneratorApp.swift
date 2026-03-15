@@ -10,9 +10,13 @@ import SwiftUI
 
 @main
 struct ImageGeneratorApp: App {
+    
+    @State var appManager = AppManager()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ImageGeneratorView()
+                .environment(appManager)
         }
     }
 }
