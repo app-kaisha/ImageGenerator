@@ -15,6 +15,9 @@ struct ImageButtonsView: View {
     var body: some View {
         regenerateButton
             .toolbar {
+                ToolbarItem {
+                    imagePlaygroundButton
+                }
                 ToolbarItem(placement: .primaryAction) {
                     shareButton
                 }
@@ -28,6 +31,13 @@ struct ImageButtonsView: View {
         .buttonStyle(.plain)
         .font(.footnote)
         .disabled(!appManager.showKitchen || appManager.isGenerating)
+    }
+    
+    private var imagePlaygroundButton: some View {
+        Button("Edit in Image playground", systemImage: "apple.image.playground") {
+            appManager.showPlayground = true
+        }
+        .disabled(appManager.currentImage == nil)
     }
     
     @ViewBuilder

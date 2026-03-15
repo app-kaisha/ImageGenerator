@@ -13,22 +13,31 @@ import ImagePlayground
 class AppManager {
     let imageGenerator = ImageGenerator()
     var currentImage: UIImage?
+    var showPlayground = false
     
     private(set) var error: Error?
     private(set) var isGenerating = false
+    private var task: Task<Void, Never>?
     
     func generateImage() {
         error = nil
         isGenerating = true
+        task?.cancel()
         
-        Task {
+        task = Task {
             do {
                 let generatedImage = try await imageGenerator.generate()
                 currentImage = UIImage(cgImage: generatedImage.cgImage)
                 isGenerating = false
             } catch {
-                self.error = error
-                isGenerating = false
+                do {
+                    try Task.checkCancellation()
+                    self.error = error
+                    isGenerating = false
+                } catch {
+                    // Task Cancelled
+                }
+                
             }
         }
     }
@@ -38,6 +47,7 @@ class AppManager {
         currentImage = nil
         error = nil
         isGenerating = false
+        task?.cancel()
     }
     
     func add(ingredient: String) {
