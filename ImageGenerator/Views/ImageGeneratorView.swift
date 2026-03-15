@@ -15,10 +15,8 @@ struct ImageGeneratorView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if let image = appManager.currentImage {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                if appManager.showKitchen {
+                    KitchenView()
                 } else {
                     StartView()
                 }

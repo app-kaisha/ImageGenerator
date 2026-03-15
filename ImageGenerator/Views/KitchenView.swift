@@ -9,11 +9,52 @@
 import SwiftUI
 
 struct KitchenView: View {
+    
+    @Environment(AppManager.self) private var appManager
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 16) {
+            Text("Refine Your Dish")
+                .font(.largeTitle.weight(.semibold))
+            
+            imageArea
+            
+            Spacer()
+            if let error = appManager.error {
+                Text(error.localizedDescription)
+                    .foregroundStyle(.red)
+            }
+        }
+        .padding()
+        .toolbar {
+            ToolbarItem(placement: .navigation) {
+                Button("Start Over", systemImage: "chevron.left") {
+                    appManager.reset()
+                }
+            }
+        }
+    }
+    
+    private var imageArea: some View {
+        Group {
+            if let image = appManager.currentImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                
+                Rectangle()
+                    .fill(.gray.opacity(0.2))
+            }
+        }
+        .frame(width: ImageGenerator.imageSize, height: ImageGenerator.imageSize)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
-    KitchenView()
+    NavigationStack {
+        KitchenView()
+            .previewEnvironment()
+    }
 }

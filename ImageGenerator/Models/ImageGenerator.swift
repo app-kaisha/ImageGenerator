@@ -35,6 +35,11 @@ class ImageGenerator {
         
     }
     
+    func resetGenerator() {
+        recipe = ImageGenerator.defaultRecipe
+        style = nil
+    }
+    
 }
 
 extension ImageGenerator {
