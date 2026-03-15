@@ -19,6 +19,8 @@ struct KitchenView: View {
             
             imageArea
             
+            ImageButtonsView()
+            
             Spacer()
             if let error = appManager.error {
                 Text(error.localizedDescription)
